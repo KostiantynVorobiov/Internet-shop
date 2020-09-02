@@ -1,1 +1,1 @@
-"# My-own-project-Internet-shop-" 
+My own project "Internet shop" 
