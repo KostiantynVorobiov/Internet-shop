@@ -1,6 +1,6 @@
 package com.internet.shop.db;
 
-import com.internet.shop.models.Product;
+import com.internet.shop.model.Product;
 import java.util.ArrayList;
 import java.util.List;
 
