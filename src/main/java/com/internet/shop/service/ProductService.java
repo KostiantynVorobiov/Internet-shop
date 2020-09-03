@@ -1,7 +1,6 @@
-package internet.shop.service;
+package com.internet.shop.service;
 
-import internet.shop.models.Product;
-
+import com.internet.shop.models.Product;
 import java.util.List;
 
 public interface ProductService {

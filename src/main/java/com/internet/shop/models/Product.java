@@ -1,13 +1,11 @@
-package internet.shop.models;
-
-import java.math.BigDecimal;
+package com.internet.shop.models;
 
 public class Product {
     private Long id;
     private String name;
-    private BigDecimal price;
+    private Double price;
 
-    public Product(String name, BigDecimal price) {
+    public Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
@@ -28,11 +26,22 @@ public class Product {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{"
+                + "id=" + id
+                + ", name='"
+                + name + '\''
+                + ", price="
+                + price
+                + '}';
     }
 }

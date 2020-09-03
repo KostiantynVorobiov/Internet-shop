@@ -1,7 +1,6 @@
-package internet.shop.dao;
+package com.internet.shop.dao;
 
-import internet.shop.models.Product;
-
+import com.internet.shop.models.Product;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,11 +8,11 @@ public interface ProductDao {
 
     Product create(Product product);
 
-    Optional<Product> get(Long id);
+    Optional<Product> getById(Long id);
 
     List<Product> getAll();
 
     Product update(Product product);
 
-    boolean delete(Long id);
+    boolean deleteById(Long id);
 }
