@@ -1,6 +1,7 @@
 package com.internet.shop;
 
 import com.internet.shop.lib.Injector;
+import com.internet.shop.model.Order;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
@@ -13,12 +14,9 @@ public class Application {
     private static Injector injector = Injector.getInstance("com.internet.shop");
 
     public static void main(String[] args) {
-        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
-        ShoppingCartService shoppingCartService = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
 
         System.out.println("Test product");
+        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
         Product motorola = new Product("Motorola", 50.50);
         Product samsung = new Product("Samsung", 7000.55);
         Product honor = new Product("Honor", 5256.85);
@@ -48,28 +46,31 @@ public class Application {
         System.out.println();
 
         System.out.println("Test users");
+        UserService userService = (UserService) injector.getInstance(UserService.class);
         User alkapone = new User("Alkapone", "Alkaponchil_2004", "12346789");
         User mcClane = new User("McClane", "oreshek.2008", "911911");
         User afonya = new User("Afonya", "golubi.1978", "1111");
-        User afonyaForDelete = new User("Afonya", "golubi.1978", "1111");
+        User afanasii = new User("Afanasii", "Ivanov.2020", "13579");
         userService.create(alkapone);
         userService.create(mcClane);
         userService.create(afonya);
+        userService.create(afanasii);
         System.out.println(userService.getAll());
-        for (User user: userService.getAll()) {
+        for (User user : userService.getAll()) {
             System.out.println(user);
         }
         System.out.println("Get user by Id " + userService.get(mcClane.getId()));
         afonya.setPassword("1978.lova.lova");
         System.out.println("After update " + userService.update(afonya));
-        userService.delete(afonyaForDelete.getId());
-        for (User user: userService.getAll()) {
+        userService.delete(afanasii.getId());
+        for (User user : userService.getAll()) {
             System.out.println(user);
         }
         System.out.println();
 
-
         System.out.println("Test shoppingCart");
+        ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+                .getInstance(ShoppingCartService.class);
         ShoppingCart shoppingCartAlkapone = new ShoppingCart(alkapone.getId());
         ShoppingCart shoppingCartMcClane = new ShoppingCart(mcClane.getId());
         ShoppingCart shoppingCartAfonya = new ShoppingCart(afonya.getId());
@@ -86,19 +87,24 @@ public class Application {
         System.out.println("Alkapone's card: " + shoppingCartService.getByUserId(alkapone.getId()));
         System.out.println("McClane's card: " + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.deleteProduct(shoppingCartMcClane, motorola);
-        System.out.println("McClane's card: " + shoppingCartService.getByUserId(mcClane.getId()));
+        System.out.println("McClane's card after delete product: "
+                + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.clear(shoppingCartMcClane);
-        System.out.println("McClane's card after clear: " + shoppingCartService.getByUserId(mcClane.getId()));
+        System.out.println("McClane's card after clear: "
+                + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.delete(shoppingCartMcClane);
         System.out.println();
 
         System.out.println("Test order");
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
         orderService.completeOrder(shoppingCartAlkapone);
         orderService.completeOrder(shoppingCartAfonya);
         orderService.completeOrder(shoppingCartService.getByUserId(afonya.getId()));
-        System.out.println(orderService.getUserOrders(alkapone.getId()));
+        System.out.println("Alkapone order: " + orderService.getUserOrders(alkapone.getId()));
+        orderService.delete(afonya.getId());
         System.out.println(orderService.getAll());
-
-
+        for (Order order : orderService.getAll()) {
+            System.out.println(order);
+        }
     }
 }
