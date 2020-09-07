@@ -2,11 +2,13 @@ package com.internet.shop.dao.impl;
 
 import com.internet.shop.dao.OrderDao;
 import com.internet.shop.db.Storage;
+import com.internet.shop.lib.Dao;
 import com.internet.shop.model.Order;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
+ @Dao
 public class OrderDaoImpl implements OrderDao {
     @Override
     public Order create(Order order) {
@@ -15,7 +17,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<Order> getById(Long id) {
+    public Optional<Order> getOrderById(Long id) {
         return Storage.orders.stream()
                 .filter(order -> order.getId().equals(id))
                 .findFirst();
@@ -27,11 +29,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order update(Order order) {
-        IntStream.range(0, Storage.orders.size())
-                .filter(index -> Storage.orders.get(index).equals(order.getId()))
-                .forEach(index -> Storage.orders.set(index, order));
-        return order;
+    public List<Order> getOrderByUserId(Long userId) {
+        return Storage.orders.stream()
+                .filter(order -> order.getUserId().equals(userId))
+                .collect(Collectors.toList());
     }
 
     @Override

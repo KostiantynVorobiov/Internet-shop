@@ -7,11 +7,11 @@ import java.util.Optional;
 public interface OrderDao {
     Order create(Order order);
 
-    Optional<Order> getById(Long id);
+    Optional<Order> getOrderById(Long id);
 
     List<Order> getAll();
 
-    Order update(Order order);
+    List<Order> getOrderByUserId (Long userId);
 
     boolean delete(Long id);
 }
