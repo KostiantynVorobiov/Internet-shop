@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product get(Long id) {
-        return productDao.getById(id).get();
+        return productDao.getProductById(id).get();
     }
 
     @Override
