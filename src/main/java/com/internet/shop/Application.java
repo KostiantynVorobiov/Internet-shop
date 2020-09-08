@@ -84,13 +84,13 @@ public class Application {
         shoppingCartService.addProduct(shoppingCartMcClane, nokia);
         shoppingCartService.addProduct(shoppingCartMcClane, motorola);
         shoppingCartService.addProduct(shoppingCartMcClane, huawei);
-        System.out.println("Alkapone's card: " + shoppingCartService.getByUserId(alkapone.getId()));
-        System.out.println("McClane's card: " + shoppingCartService.getByUserId(mcClane.getId()));
+        System.out.println("Alkapone's cart: " + shoppingCartService.getByUserId(alkapone.getId()));
+        System.out.println("McClane's cart: " + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.deleteProduct(shoppingCartMcClane, motorola);
-        System.out.println("McClane's card after delete product: "
+        System.out.println("McClane's cart after delete product: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.clear(shoppingCartMcClane);
-        System.out.println("McClane's card after clear: "
+        System.out.println("McClane's cart after clear: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
         shoppingCartService.delete(shoppingCartMcClane);
         System.out.println();
