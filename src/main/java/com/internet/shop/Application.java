@@ -92,7 +92,7 @@ public class Application {
         shoppingCartService.clear(shoppingCartMcClane);
         System.out.println("McClane's cart after clear: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
-        shoppingCartService.delete(shoppingCartMcClane);
+        shoppingCartService.delete(shoppingCartMcClane.getId());
         System.out.println();
 
         System.out.println("Test order");
