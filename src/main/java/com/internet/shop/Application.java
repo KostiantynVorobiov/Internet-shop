@@ -34,12 +34,12 @@ public class Application {
             System.out.println(product);
         }
         System.out.println();
-        System.out.println("Read product by ID " + productService.get(huawei.getId()));
+        System.out.println("Read product by ID " + productService.getById(huawei.getId()));
         motorola.setPrice(1000.00);
         motorola.setName("LG");
         System.out.println("Product after update " + productService.update(motorola));
         System.out.println();
-        productService.delete(honor.getId());
+        productService.deleteById(honor.getId());
         for (Product product : productService.getAll()) {
             System.out.println(product);
         }
@@ -59,10 +59,10 @@ public class Application {
         for (User user : userService.getAll()) {
             System.out.println(user);
         }
-        System.out.println("Get user by Id " + userService.get(mcClane.getId()));
+        System.out.println("Get user by Id " + userService.getById(mcClane.getId()));
         afonya.setPassword("1978.lova.lova");
         System.out.println("After update " + userService.update(afonya));
-        userService.delete(afanasii.getId());
+        userService.deleteById(afanasii.getId());
         for (User user : userService.getAll()) {
             System.out.println(user);
         }
@@ -92,7 +92,7 @@ public class Application {
         shoppingCartService.clear(shoppingCartMcClane);
         System.out.println("McClane's cart after clear: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
-        shoppingCartService.delete(shoppingCartMcClane.getId());
+        shoppingCartService.deleteById(shoppingCartMcClane.getId());
         System.out.println();
 
         System.out.println("Test order");
@@ -101,7 +101,7 @@ public class Application {
         orderService.completeOrder(shoppingCartAfonya);
         orderService.completeOrder(shoppingCartService.getByUserId(afonya.getId()));
         System.out.println("Alkapone order: " + orderService.getUserOrders(alkapone.getId()));
-        orderService.delete(afonya.getId());
+        orderService.deleteById(afonya.getId());
         System.out.println(orderService.getAll());
         for (Order order : orderService.getAll()) {
             System.out.println(order);
