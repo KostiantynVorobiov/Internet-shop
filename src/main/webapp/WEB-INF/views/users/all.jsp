@@ -24,8 +24,12 @@
             <td>
                 <c:out value="${user.login}"/>
             </td>
+            <td>
+                <a href="${pageContext.request.contextPath}/users/delete?id=${user.id}">Delete</a>
+            </td>
         </tr>
     </c:forEach>
 </table>
+<a href="${pageContext.request.contextPath}/">Home</a>
 </body>
 </html>
