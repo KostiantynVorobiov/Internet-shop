@@ -6,11 +6,11 @@
 <body>
 <h1>Hello world!</h1>
 
-<a href="${pageContext.request.contextPath}/inject-data">Inject test data to DB</a>
-<a href="${pageContext.request.contextPath}/users/all">All users</a>
-<a href="${pageContext.request.contextPath}/registration">Register new user</a>
-<a href="${pageContext.request.contextPath}/products/add">Add new product</a>
-<a href="${pageContext.request.contextPath}/products/all">All products</a>
-
+<a href="${pageContext.request.contextPath}/inject-data">Inject test data to DB </a><br/>
+<a href="${pageContext.request.contextPath}/users/all">All users </a><br/>
+<a href="${pageContext.request.contextPath}/registration">Register new user </a><br/>
+<a href="${pageContext.request.contextPath}/products/add">Add new product </a><br/>
+<a href="${pageContext.request.contextPath}/products/all">All products </a><br/>
+<a href="${pageContext.request.contextPath}/users/order">Order </a><br/>
 </body>
 </html>

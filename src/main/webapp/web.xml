@@ -99,4 +99,24 @@
         <servlet-name>deleteProductFromShoppingCart</servlet-name>
         <url-pattern>/shopping-carts/products/delete</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>createOrder</servlet-name>
+        <servlet-class>com.internet.shop.controller.CreateOrderController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>createOrder</servlet-name>
+        <url-pattern>/order/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>allOrders</servlet-name>
+        <servlet-class>com.internet.shop.controller.GetUsersOrdersController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>allOrders</servlet-name>
+        <url-pattern>/users/order</url-pattern>
+    </servlet-mapping>
 </web-app>

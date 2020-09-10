@@ -32,8 +32,8 @@
 
     </c:forEach>
 </table>
-<a href="${pageContext.request.contextPath}/">Home</a>
-<a href="${pageContext.request.contextPath}/products/add">Add new product</a>
-<a href="${pageContext.request.contextPath}/shopping-carts/products">Cart</a>
+<a href="${pageContext.request.contextPath}/products/add">Add new product</a><br/>
+<a href="${pageContext.request.contextPath}/shopping-carts/products">Cart</a><br/>
+<a href="${pageContext.request.contextPath}/">Home</a><br/>
 </body>
 </html>

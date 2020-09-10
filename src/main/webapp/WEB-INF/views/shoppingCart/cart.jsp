@@ -31,10 +31,8 @@
 
     </c:forEach>
 </table>
-<a href="${pageContext.request.contextPath}/">Home</a>
-<a href="${pageContext.request.contextPath}/products/all">Back to All products</a>
-
-</body>
-</html>
+<a href="${pageContext.request.contextPath}/products/all">Back to All products</a><br/>
+<a href="${pageContext.request.contextPath}/order/create">Complete</a><br/>
+<a href="${pageContext.request.contextPath}/">Home</a><br/>
 </body>
 </html>
