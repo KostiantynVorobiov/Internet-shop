@@ -89,4 +89,14 @@
         <servlet-name>cartProducts</servlet-name>
         <url-pattern>/shopping-carts/products</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteProductFromShoppingCart</servlet-name>
+        <servlet-class>com.internet.shop.controller.DeleteProductFormShoppingCartController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>deleteProductFromShoppingCart</servlet-name>
+        <url-pattern>/shopping-carts/products/delete</url-pattern>
+    </servlet-mapping>
 </web-app>
