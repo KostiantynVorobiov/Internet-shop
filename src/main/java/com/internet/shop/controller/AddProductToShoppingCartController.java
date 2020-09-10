@@ -1,11 +1,11 @@
 package com.internet.shop.controller;
 
-import java.io.IOException;
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +22,8 @@ public class AddProductToShoppingCartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String Id = req.getParameter("id");
-        Long productId = Long.valueOf(Id);
+        String id = req.getParameter("id");
+        Long productId = Long.valueOf(id);
         Product product = productService.getById(productId);
         ShoppingCart shoppingCart = shoppingCartService.getByUserId(USER_ID);
         shoppingCartService.addProduct(shoppingCart, product);

@@ -7,11 +7,11 @@ import com.internet.shop.model.User;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class InjectDataController extends HttpServlet {
     private static final Injector injector = Injector.getInstance("com.internet.shop");
@@ -22,7 +22,8 @@ public class InjectDataController extends HttpServlet {
             .getInstance(ShoppingCartService.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         User mcClane = new User("McClane", "oreshek.2008", "911911");
         User afonya = new User("Afonya", "golubi.1978", "1111");
         User afanasii = new User("Afanasii", "Ivanov.2020", "13579");
