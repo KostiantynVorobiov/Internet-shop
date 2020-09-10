@@ -6,7 +6,6 @@
 <body>
 <h1>Your mock data was added to DB</h1>
 
-
 <a href="${pageContext.request.contextPath}/">Home</a>
 </body>
 </html>
