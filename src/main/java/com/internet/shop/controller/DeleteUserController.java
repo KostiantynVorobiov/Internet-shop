@@ -21,7 +21,7 @@ public class DeleteUserController extends HttpServlet {
         String userId = req.getParameter("id");
         Long id = Long.valueOf(userId);
         userService.deleteById(id);
-        shoppingCartService.deleteById(id);
+        shoppingCartService.deleteById(shoppingCartService.getByUserId(id).getId());
         resp.sendRedirect(req.getContextPath() + "/users/all");
     }
 }
