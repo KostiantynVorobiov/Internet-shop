@@ -2,8 +2,10 @@ package com.internet.shop.controllers;
 
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
+import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
 import com.internet.shop.service.ProductService;
+import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
 
 import javax.servlet.ServletException;
@@ -13,10 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class InjectDataController extends HttpServlet {
-    private static Injector injector = Injector.getInstance("com.internet.shop");
-    UserService userService = (UserService) injector.getInstance(UserService.class);
+    private static final Injector injector = Injector.getInstance("com.internet.shop");
+    private final UserService userService = (UserService) injector.getInstance(UserService.class);
     private final ProductService productService =
             (ProductService) injector.getInstance(ProductService.class);
+    private final ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+            .getInstance(ShoppingCartService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,6 +38,12 @@ public class InjectDataController extends HttpServlet {
         productService.create(honor);
         productService.create(motorola);
 
+        ShoppingCart shoppingCartAffanasii = new ShoppingCart(afanasii.getId());
+        ShoppingCart shoppingCartAfonya = new ShoppingCart(afonya.getId());
+        ShoppingCart shoppingCartMcClane = new ShoppingCart(mcClane.getId());
+        shoppingCartService.create(shoppingCartAffanasii);
+        shoppingCartService.create(shoppingCartAfonya);
+        shoppingCartService.create(shoppingCartMcClane);
         req.getRequestDispatcher("/WEB-INF/views/injectData.jsp").forward(req, resp);
     }
 }

@@ -30,6 +30,5 @@ public class AddProductController  extends HttpServlet {
         Product product = new Product(name, price);
         productService.create(product);
         resp.sendRedirect(req.getContextPath() + "/");
-      //  req.getRequestDispatcher("/WEB-INF/views/products/all.jsp").forward(req, resp);
     }
 }
