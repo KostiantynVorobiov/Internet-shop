@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-   
+
     <servlet>
         <servlet-name>index</servlet-name>
-        <servlet-class>com.internet.shop.controllers.IndexController</servlet-class>
+        <servlet-class>com.internet.shop.controller.IndexController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>allUsers</servlet-name>
-        <servlet-class>com.internet.shop.controllers.UserController</servlet-class>
+        <servlet-class>com.internet.shop.controller.UserController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -26,7 +26,7 @@
 
     <servlet>
         <servlet-name>registration</servlet-name>
-        <servlet-class>com.internet.shop.controllers.RegistrationController</servlet-class>
+        <servlet-class>com.internet.shop.controller.RegistrationController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -36,16 +36,16 @@
 
     <servlet>
         <servlet-name>injectData</servlet-name>
-        <servlet-class>com.internet.shop.controllers.InjectDataController</servlet-class>
+        <servlet-class>com.internet.shop.controller.InjectDataController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>injectData</servlet-name>
-        <url-pattern>/injectData</url-pattern>
+        <url-pattern>/inject-data</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>deleteUser</servlet-name>
-        <servlet-class>com.internet.shop.controllers.DeleteUserController</servlet-class>
+        <servlet-class>com.internet.shop.controller.DeleteUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>deleteUser</servlet-name>
@@ -54,7 +54,7 @@
 
     <servlet>
         <servlet-name>addProduct</servlet-name>
-        <servlet-class>com.internet.shop.controllers.AddProductController</servlet-class>
+        <servlet-class>com.internet.shop.controller.AddProductController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>addProduct</servlet-name>
@@ -63,7 +63,7 @@
 
     <servlet>
         <servlet-name>allProducts</servlet-name>
-        <servlet-class>com.internet.shop.controllers.GetAllProductController</servlet-class>
+        <servlet-class>com.internet.shop.controller.GetAllProductController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>allProducts</servlet-name>
@@ -72,7 +72,7 @@
 
     <servlet>
         <servlet-name>buyProduct</servlet-name>
-        <servlet-class>com.internet.shop.controllers.AddProductToShoppingCartController</servlet-class>
+        <servlet-class>com.internet.shop.controller.AddProductToShoppingCartController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -82,13 +82,11 @@
 
     <servlet>
         <servlet-name>cartProducts</servlet-name>
-        <servlet-class>com.internet.shop.controllers.GetShoppingCartController</servlet-class>
+        <servlet-class>com.internet.shop.controller.GetShoppingCartController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>cartProducts</servlet-name>
         <url-pattern>/shopping-cart/cart</url-pattern>
     </servlet-mapping>
-
-
 </web-app>

@@ -1,12 +1,10 @@
-package com.internet.shop.controllers;
+package com.internet.shop.controller;
 
 import java.io.IOException;
 import java.util.List;
-
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
 import com.internet.shop.service.ProductService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +21,6 @@ public class GetAllProductController extends HttpServlet {
             throws ServletException, IOException {
         List<Product> allProducts = productService.getAll();
         req.setAttribute("products", allProducts);
-        req.getRequestDispatcher("/WEB-INF/views/products/all.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/product/all.jsp").forward(req, resp);
     }
 }

@@ -1,4 +1,4 @@
-package com.internet.shop.controllers;
+package com.internet.shop.controller;
 
 import java.io.IOException;
 import com.internet.shop.lib.Injector;
@@ -6,7 +6,6 @@ import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
