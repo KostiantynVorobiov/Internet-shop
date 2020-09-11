@@ -12,16 +12,16 @@
         <th>ID</th>
         <th>Products</th>
     </tr>
-<c:forEach var="order" items="${orders}">
-    <tr>
-        <td>
-            <c:out value="${order.id}"/>
-        </td>
-        <td>
-            <c:out value="${order.products}"/>
-        </td>
-    </tr>
-</c:forEach>
+    <c:forEach var="order" items="${orders}">
+        <tr>
+            <td>
+                <c:out value="${order.id}"/>
+            </td>
+            <td>
+                <c:out value="${order.products}"/>
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 <a href="${pageContext.request.contextPath}/">Home</a>
 </body>
