@@ -102,7 +102,7 @@
 
     <servlet>
         <servlet-name>createOrder</servlet-name>
-        <servlet-class>com.internet.shop.controller.CreateOrderController</servlet-class>
+        <servlet-class>com.internet.shop.controller.CompleteOrderController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -112,11 +112,31 @@
 
     <servlet>
         <servlet-name>allOrders</servlet-name>
-        <servlet-class>com.internet.shop.controller.GetUsersOrdersController</servlet-class>
+        <servlet-class>com.internet.shop.controller.GetUserOrdersController</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>allOrders</servlet-name>
         <url-pattern>/users/order</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteOrder</servlet-name>
+        <servlet-class>com.internet.shop.controller.DeleteOrderController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>deleteOrder</servlet-name>
+        <url-pattern>/order/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>adminOrder</servlet-name>
+        <servlet-class>com.internet.shop.controller.GetAdminOrdersController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>adminOrder</servlet-name>
+        <url-pattern>/order/admin</url-pattern>
     </servlet-mapping>
 </web-app>

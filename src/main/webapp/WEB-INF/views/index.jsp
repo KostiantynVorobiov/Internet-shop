@@ -12,5 +12,7 @@
 <a href="${pageContext.request.contextPath}/products/add">Add new product </a><br/>
 <a href="${pageContext.request.contextPath}/products/all">All products </a><br/>
 <a href="${pageContext.request.contextPath}/users/order">Order </a><br/>
+<a href="${pageContext.request.contextPath}/order/admin">Order for Admin</a><br/>
+
 </body>
 </html>

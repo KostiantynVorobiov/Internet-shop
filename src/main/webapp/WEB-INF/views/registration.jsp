@@ -9,10 +9,14 @@
 <h4 style="color: red"> ${message}</h4>
 
 <form method="post" action="${pageContext.request.contextPath}/registration">
-    Enter your name: <input type="text" name="name">
-    Enter your login: <input type="text" name="login">
-    Enter your password: <input type="password" name="password">
-    Repeat your password: <input type="password" name="passwordRepeat">
+    Enter your name: <input type="text" name="name"><br/>
+    <br/>
+    Enter your login: <input type="text" name="login"><br/>
+    <br/>
+    Enter your password: <input type="password" name="password"><br/>
+    <br/>
+    Repeat your password: <input type="password" name="passwordRepeat"><br/>
+    <br/>
 
     <button type="submit">Registry</button>
 </form>
