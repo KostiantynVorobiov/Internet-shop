@@ -16,7 +16,8 @@ public class GetAdminOrdersController extends HttpServlet {
             (OrderService) injector.getInstance(OrderService.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         List<Order> orders = orderService.getAll();
         req.setAttribute("orders", orders);
         req.getRequestDispatcher("/WEB-INF/views/order/ordersForAdmin.jsp").forward(req, resp);

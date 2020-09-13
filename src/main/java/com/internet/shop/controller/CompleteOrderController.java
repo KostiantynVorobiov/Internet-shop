@@ -19,7 +19,8 @@ public class CompleteOrderController extends HttpServlet {
             (OrderService) injector.getInstance(OrderService.class);
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         ShoppingCart shoppingCart = shoppingCartService.getByUserId(USER_ID);
         orderService.completeOrder(shoppingCart);
         resp.sendRedirect(req.getContextPath() + "/users/order");
