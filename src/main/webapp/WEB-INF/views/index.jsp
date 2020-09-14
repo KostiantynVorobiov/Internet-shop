@@ -11,9 +11,9 @@
 <a href="${pageContext.request.contextPath}/registration">Register new user </a><br/>
 <a href="${pageContext.request.contextPath}/products/add">Add new product </a><br/>
 <a href="${pageContext.request.contextPath}/products/all">All products </a><br/>
-<a href="${pageContext.request.contextPath}/products/all/admin">All products for Admin</a><br/>
-<a href="${pageContext.request.contextPath}/users/order">Order </a><br/>
-<a href="${pageContext.request.contextPath}/order/admin">Order for Admin</a><br/>
+<a href="${pageContext.request.contextPath}/products/manage">All products for Admin</a><br/>
+<a href="${pageContext.request.contextPath}/user/orders">Order </a><br/>
+<a href="${pageContext.request.contextPath}/orders">Order for Admin</a><br/>
 
 </body>
 </html>
