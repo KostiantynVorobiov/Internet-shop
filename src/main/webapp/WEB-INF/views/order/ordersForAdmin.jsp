@@ -11,7 +11,7 @@
     <tr>
         <th>ID</th>
         <th>User ID</th>
-        <th>Products</th>
+        <th>Details</th>
     </tr>
     <c:forEach var="order" items="${orders}">
         <tr>
@@ -22,11 +22,12 @@
                 <c:out value="${order.userId}"/>
             </td>
             <td>
-                <c:out value="${order.products}"/>
+                <a href="${pageContext.request.contextPath}/orders/details?id=${order.id}">Details</a>
             </td>
             <td>
                 <a href="${pageContext.request.contextPath}/orders/delete?id=${order.id}">Delete</a>
             </td>
+
         </tr>
     </c:forEach>
 </table>
