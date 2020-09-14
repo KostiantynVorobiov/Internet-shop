@@ -159,4 +159,14 @@
         <servlet-name>allAdminProducts</servlet-name>
         <url-pattern>/products/manage</url-pattern>
     </servlet-mapping>
+    
+    <filter>
+        <filter-name>authenticationFilter</filter-name>
+        <filter-class>com.internet.shop.web.filters.AuthenticationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>authenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

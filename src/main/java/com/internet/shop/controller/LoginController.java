@@ -4,17 +4,16 @@ import com.internet.shop.exeption.AuthenticationException;
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.User;
 import com.internet.shop.security.AuthenticationService;
-import com.internet.shop.service.UserService;
-
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/login")
-public class LoginController  extends HttpServlet {
+public class LoginController extends HttpServlet {
     private static final Injector injector = Injector.getInstance("com.internet.shop");
     private final AuthenticationService authenticationService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
@@ -32,6 +31,8 @@ public class LoginController  extends HttpServlet {
         String password = req.getParameter("password");
         try {
             User user = authenticationService.login(login, password);
+            HttpSession session = req.getSession();
+            session.setAttribute("user_id", user.getId());
         } catch (AuthenticationException e) {
             req.setAttribute("errorMes", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
