@@ -92,7 +92,7 @@
 
     <servlet>
         <servlet-name>deleteProductFromShoppingCart</servlet-name>
-        <servlet-class>com.internet.shop.controller.DeleteProductFormShoppingCartController</servlet-class>
+        <servlet-class>com.internet.shop.controller.DeleteProductFromShoppingCartController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -132,7 +132,7 @@
 
     <servlet>
         <servlet-name>adminOrder</servlet-name>
-        <servlet-class>com.internet.shop.controller.GetAdminOrdersController</servlet-class>
+        <servlet-class>com.internet.shop.controller.GetOrdersController</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -152,7 +152,7 @@
 
     <servlet>
         <servlet-name>allAdminProducts</servlet-name>
-        <servlet-class>com.internet.shop.controller.GetAllAdminProductsController</servlet-class>
+        <servlet-class>com.internet.shop.controller.ManageProductsController</servlet-class>
     </servlet>
 
     <servlet-mapping>
