@@ -35,7 +35,7 @@ public class RegistrationController extends HttpServlet {
             userService.create(user);
             ShoppingCart shoppingCart = new ShoppingCart(user.getId());
             shoppingCartService.create(shoppingCart);
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/login");
         } else {
             req.setAttribute("message", "Your password and repeat password isn't match");
             req.getRequestDispatcher("/WEB-INF/views/registration.jsp").forward(req, resp);
