@@ -14,6 +14,7 @@
 <a href="${pageContext.request.contextPath}/products/manage">All products for Admin</a><br/>
 <a href="${pageContext.request.contextPath}/user/orders">Order </a><br/>
 <a href="${pageContext.request.contextPath}/orders">Order for Admin</a><br/>
-
+<br/>
+<a href="${pageContext.request.contextPath}/logout">Logout</a><br/>
 </body>
 </html>

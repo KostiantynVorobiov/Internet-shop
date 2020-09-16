@@ -15,6 +15,8 @@
     <br/>
     <button type="submit">Login</button>
 </form>
-<a href="${pageContext.request.contextPath}/registration">Register new user </a><br/>
+<a href="${pageContext.request.contextPath}/registration">
+    <button>Register new user</button>
+</a><br/>
 </body>
 </html>
