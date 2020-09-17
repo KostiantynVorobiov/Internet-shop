@@ -1,4 +1,4 @@
-package com.internet.shop.controller;
+package com.internet.shop.controller.cart;
 
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddProductToShoppingCartController extends HttpServlet {
+public class DeleteProductFromShoppingCartController extends HttpServlet {
     private static final String USER_ID = "user_id";
     private static final Injector injector = Injector.getInstance("com.internet.shop");
-    private final ShoppingCartService shoppingCartService = (ShoppingCartService) injector
-            .getInstance(ShoppingCartService.class);
+    private final ShoppingCartService shoppingCartService =
+            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private final ProductService productService =
             (ProductService) injector.getInstance(ProductService.class);
 
@@ -27,7 +27,7 @@ public class AddProductToShoppingCartController extends HttpServlet {
         Product product = productService.getById(productId);
         Long userId = (Long) req.getSession().getAttribute(USER_ID);
         ShoppingCart shoppingCart = shoppingCartService.getByUserId(userId);
-        shoppingCartService.addProduct(shoppingCart, product);
+        shoppingCartService.deleteProduct(shoppingCart, product);
         resp.sendRedirect(req.getContextPath() + "/shopping-carts/products");
     }
 }
