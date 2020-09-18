@@ -1,0 +1,1 @@
+CREATE SCHEMA `internet_shop` DEFAULT CHARACTER SET utf8 ;
