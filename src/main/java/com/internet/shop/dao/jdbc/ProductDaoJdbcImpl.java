@@ -81,7 +81,8 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public Product update(Product item) {
-        String query = "UPDATE products SET name=?, price=? WHERE deleted = false AND product_id = ?";
+        String query = "UPDATE products SET name=?, price=? "
+                + "WHERE deleted = false AND product_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, item.getName());
@@ -96,7 +97,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public boolean deleteById(Long id) {
-        String query = "UPDATE products SET deleted = true WHERE product_id=?";
+        String query = "UPDATE products SET deleted = true WHERE product_id=? AND deleted = false";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, id);
