@@ -2,6 +2,7 @@ package com.internet.shop.dao.jdbc;
 
 import com.internet.shop.dao.ProductDao;
 import com.internet.shop.exeption.DataOperationException;
+import com.internet.shop.lib.Dao;
 import com.internet.shop.model.Product;
 import com.internet.shop.util.ConnectionUtil;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
 public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
@@ -37,7 +39,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public Optional<Product> getById(Long id) {
-        String query = "SELECT * FROM products WHERE deleted = 0 AND product_id = ?";
+        String query = "SELECT * FROM products WHERE deleted = false AND product_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, id);
@@ -59,7 +61,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
     @Override
     public List<Product> getAll() {
         List<Product> productList = new ArrayList<>();
-        String query = "SELECT * FROM products";
+        String query = "SELECT * FROM products WHERE deleted = false ";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,7 +81,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public Product update(Product item) {
-        String query = "UPDATE products SET name=?, price=? WHERE deleted = 0 AND product_id = ?";
+        String query = "UPDATE products SET name=?, price=? WHERE deleted = false AND product_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, item.getName());
@@ -94,12 +96,11 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public boolean deleteById(Long id) {
-        String query = "UPDATE products SET deleted = 1 WHERE product_id=?";
+        String query = "UPDATE products SET deleted = true WHERE product_id=?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, id);
-            preparedStatement.executeUpdate();
-            return true;
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DataOperationException("Can't deleted product with id: " + id, e);
         }
