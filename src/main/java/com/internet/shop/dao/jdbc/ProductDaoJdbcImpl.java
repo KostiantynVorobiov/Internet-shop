@@ -4,7 +4,6 @@ import com.internet.shop.dao.ProductDao;
 import com.internet.shop.exeption.DataOperationException;
 import com.internet.shop.model.Product;
 import com.internet.shop.util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,12 +19,16 @@ public class ProductDaoJdbcImpl implements ProductDao {
     public Product create(Product item) {
         String query = "INSERT INTO products (name, price) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            System.out.println(connection.isClosed());
+            PreparedStatement preparedStatement = connection.prepareStatement(query,
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, item.getName());
             preparedStatement.setDouble(2, item.getPrice());
-            System.out.println(preparedStatement.isClosed());
             preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()) {
+                Long productId = resultSet.getLong(1);
+                item.setId(productId);
+            }
             return item;
         } catch (SQLException e) {
             throw new DataOperationException("Can't create product: " + item.getName(), e);
@@ -40,11 +43,11 @@ public class ProductDaoJdbcImpl implements ProductDao {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                long product_id = resultSet.getLong("product_id");
+                Long productId = resultSet.getLong("product_id");
                 String name = resultSet.getString("name");
                 Double price = resultSet.getDouble("price");
                 Product product = new Product(name, price);
-                product.setId(product_id);
+                product.setId(productId);
                 return Optional.of(product);
             }
         } catch (SQLException e) {
@@ -61,11 +64,11 @@ public class ProductDaoJdbcImpl implements ProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                long product_id = resultSet.getLong("product_id");
+                long productId = resultSet.getLong("product_id");
                 String name = resultSet.getString("name");
                 Double price = resultSet.getDouble("price");
                 Product product = new Product(name, price);
-                product.setId(product_id);
+                product.setId(productId);
                 productList.add(product);
             }
             return productList;
