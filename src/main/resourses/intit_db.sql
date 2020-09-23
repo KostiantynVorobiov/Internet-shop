@@ -65,3 +65,22 @@ CREATE TABLE `internet_shop`.`shopping_carts`
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 );
+CREATE TABLE `internet_shop`.`shopping_carts_products`
+(
+    `id`         BIGINT(11) NOT NULL AUTO_INCREMENT,
+    `cart_id`    BIGINT(11) NOT NULL,
+    `product_id` BIGINT(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `cart_cart_id_fk_idx` (`cart_id` ASC) VISIBLE,
+    INDEX `products_product_id_fk_idx` (`product_id` ASC) VISIBLE,
+    CONSTRAINT `carts_cart_id_fk`
+        FOREIGN KEY (`cart_id`)
+            REFERENCES `internet_shop`.`shopping_carts` (`cart_id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `products_product_id_fk`
+        FOREIGN KEY (`product_id`)
+            REFERENCES `internet_shop`.`products` (`product_id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
+);

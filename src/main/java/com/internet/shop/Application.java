@@ -3,8 +3,10 @@ package com.internet.shop;
 import com.internet.shop.lib.Injector;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.Role;
+import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
 import com.internet.shop.service.ProductService;
+import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
 
 import java.util.Set;
@@ -14,21 +16,21 @@ public class Application {
 
     public static void main(String[] args) {
         System.out.println("Test product");
-//        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
-//        Product honor = new Product("Honor", 5362.52);
-//        Product huawei = new Product("Huawei", 4569.25);
-//        Product xiaomi = new Product("Xiaomi", 3245.10);
-//        productService.create(huawei);
-//        productService.create(honor);
-//        productService.create(xiaomi);
-//        System.out.println("Get product id " + honor.getId());
-//        System.out.println("Get product by id " + productService.getById(honor.getId()));
-//        System.out.println(productService.getAll());
-//        xiaomi.setPrice(xiaomi.getPrice() + 10000);
-//        System.out.println("Update product " + productService.update(xiaomi));
-//        System.out.println(productService.getAll());
-//        productService.deleteById(xiaomi.getId());
-//        System.out.println("After delete " + productService.getAll());
+        ProductService productService = (ProductService) injector.getInstance(ProductService.class);
+        Product honor = new Product("Honor", 5362.52);
+        Product huawei = new Product("Huawei", 4569.25);
+        Product xiaomi = new Product("Xiaomi", 3245.10);
+        productService.create(huawei);
+        productService.create(honor);
+        productService.create(xiaomi);
+        System.out.println("Get product id " + honor.getId());
+        System.out.println("Get product by id " + productService.getById(honor.getId()));
+        System.out.println(productService.getAll());
+        xiaomi.setPrice(xiaomi.getPrice() + 10000);
+        System.out.println("Update product " + productService.update(xiaomi));
+        System.out.println(productService.getAll());
+        productService.deleteById(xiaomi.getId());
+        System.out.println("After delete " + productService.getAll());
 
         System.out.println("Test users");
         UserService userService = (UserService) injector.getInstance(UserService.class);
@@ -62,5 +64,18 @@ public class Application {
         for (User user : userService.getAll()) {
             System.out.println(user);
         }
-    }
+
+        System.out.println("Test shoppingCart");
+        ShoppingCartService shoppingCartService = (ShoppingCartService) injector
+                .getInstance(ShoppingCartService.class);
+        ShoppingCart shoppingCartAlkapone = new ShoppingCart(alkapone.getId());
+        ShoppingCart shoppingCartMcClane = new ShoppingCart(mcClane.getId());
+        ShoppingCart shoppingCartAfonya = new ShoppingCart(afonya.getId());
+        shoppingCartService.create(shoppingCartAlkapone);
+        shoppingCartService.create(shoppingCartMcClane);
+        shoppingCartService.create(shoppingCartAfonya);
+        shoppingCartService.addProduct(shoppingCartAfonya, huawei);
+        shoppingCartService.addProduct(shoppingCartAlkapone, honor);
+        shoppingCartService.addProduct(shoppingCartAlkapone, xiaomi);
+   }
 }
