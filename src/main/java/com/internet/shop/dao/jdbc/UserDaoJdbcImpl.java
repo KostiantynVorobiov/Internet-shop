@@ -77,11 +77,11 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
-        List<User> userList = new ArrayList<>();
         String query = "SELECT * FROM users WHERE deleted = false";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
+            List<User> userList = new ArrayList<>();
             while (resultSet.next()) {
                 userList.add(getUserFromResultSet(resultSet));
             }

@@ -1,12 +1,11 @@
 package com.internet.shop.dao.jdbc;
 
-import com.internet.shop.dao.ShoppingCartDao;
+import com.internet.shop.dao.OrderDao;
 import com.internet.shop.exeption.DataOperationException;
 import com.internet.shop.lib.Dao;
+import com.internet.shop.model.Order;
 import com.internet.shop.model.Product;
-import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,132 +16,131 @@ import java.util.List;
 import java.util.Optional;
 
 @Dao
-public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
+public class OrderDaoJdbcImpl implements OrderDao {
     @Override
-    public Optional<ShoppingCart> getShoppingCartByUserId(Long userId) {
-        String query = "SELECT * FROM shopping_carts WHERE deleted = false AND user_id = ?";
+    public List<Order> getOrderByUserId(Long userId) {
+        String query = "SELECT * FROM orders WHERE deleted = false AND user_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
+            List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
-                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet);
-                return Optional.of(shoppingCart);
+                orderList.add(getOrderFromResultSet(resultSet));
             }
+            return orderList;
         } catch (SQLException e) {
-            throw new DataOperationException("Can't get shopping cart by user id " + userId, e);
+            throw new DataOperationException("Can't get orders by user id: " + userId, e);
         }
-        return Optional.empty();
     }
 
     @Override
-    public ShoppingCart create(ShoppingCart shoppingCart) {
-        String query = "INSERT INTO shopping_carts (user_id) VALUES (?)";
+    public Order create(Order order) {
+        String query = "INSERT INTO orders (user_id) VALUES (?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query,
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, shoppingCart.getUserId());
+            preparedStatement.setLong(1, order.getUserId());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             while (resultSet.next()) {
-                shoppingCart.setId(resultSet.getLong(1));
+                order.setId(resultSet.getLong(1));
             }
         } catch (SQLException e) {
-            throw new DataOperationException("Can't create shopping cart", e);
+            throw new DataOperationException("Can't create order", e);
         }
-        addProductsToShoppingCart(shoppingCart);
-        return shoppingCart;
+        addProductToOrder(order);
+        return order;
     }
 
     @Override
-    public Optional<ShoppingCart> getById(Long id) {
-        String query = "SELECT * FROM shopping_carts WHERE deleted = false AND cart_id = ?";
+    public Optional<Order> getById(Long orderId) {
+        String query = "SELECT * FROM orders WHERE deleted = false AND order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, id);
+            preparedStatement.setLong(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet);
-                return Optional.of(shoppingCart);
+                Order order = getOrderFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            throw new DataOperationException("Can't get shopping cart by id " + id, e);
+            throw new DataOperationException("Can't get order by id " + orderId, e);
         }
         return Optional.empty();
     }
 
     @Override
-    public List<ShoppingCart> getAll() {
-        String query = "SELECT * FROM shopping_carts WHERE deleted = false";
+    public List<Order> getAll() {
+        String query = "SELECT * FROM orders WHERE deleted = false";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<ShoppingCart> shoppingCartList = new ArrayList<>();
+            List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
-                shoppingCartList.add(getShoppingCartFromResultSet(resultSet));
+                orderList.add(getOrderFromResultSet(resultSet));
             }
-            return shoppingCartList;
+            return orderList;
         } catch (SQLException e) {
-            throw new DataOperationException("Can't get all carts", e);
+            throw new DataOperationException("Can't get all orders", e);
         }
     }
 
     @Override
-    public ShoppingCart update(ShoppingCart shoppingCart) {
-        String query = "DELETE FROM shopping_carts_products WHERE cart_id = ?";
+    public Order update(Order order) {
+        String query = "DELETE FROM orders_products WHERE order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, shoppingCart.getId());
+            preparedStatement.setLong(1, order.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataOperationException("Can't update shopping cart", e);
+            throw new DataOperationException("Can't update order with id: " + order.getId(), e);
         }
-        addProductsToShoppingCart(shoppingCart);
-        return shoppingCart;
+        addProductToOrder(order);
+        return order;
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        String query = "UPDATE shopping_carts SET deleted = TRUE WHERE cart_id = ?";
+    public boolean deleteById(Long orderId) {
+        String query = "UPDATE orders SET deleted = TRUE WHERE order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, id);
+            preparedStatement.setLong(1, orderId);
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DataOperationException("Can't delete shopping cart with id " + id, e);
+            throw new DataOperationException("Can't delete order by id: " + orderId, e);
         }
     }
 
-    private void addProductsToShoppingCart(ShoppingCart shoppingCart) {
-        String query = "INSERT INTO shopping_carts_products (cart_id, product_id) VALUES (?, ?)";
+    private void addProductToOrder(Order order) {
+        String query = "INSERT INTO orders_products (order_id, product_id) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            for (Product product : shoppingCart.getProducts()) {
+            for (Product product : order.getProducts()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setLong(1, shoppingCart.getId());
+                preparedStatement.setLong(1, order.getId());
                 preparedStatement.setLong(2, product.getId());
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DataOperationException("Can't add product to shopping cart", e);
+            throw new DataOperationException("Can't add product to order", e);
         }
     }
 
-    private ShoppingCart getShoppingCartFromResultSet(ResultSet resultSet) throws SQLException {
-        Long cartId = resultSet.getLong("cart_id");
-        Long userId = resultSet.getLong("user_id");
-        ShoppingCart shoppingCart = new ShoppingCart(userId);
-        shoppingCart.setId(cartId);
-        shoppingCart.setProducts(getProductsFromShoppingCart(cartId));
-        return shoppingCart;
+    private Order getOrderFromResultSet(ResultSet resultSet) throws SQLException {
+        long orderId = resultSet.getLong("order_id");
+        long userId = resultSet.getLong("user_id");
+        Order order = new Order(userId);
+        order.setId(orderId);
+        order.setProducts(getProductsFromOrder(orderId));
+        return order;
     }
 
-    private List<Product> getProductsFromShoppingCart(Long cartId) throws SQLException {
+    private List<Product> getProductsFromOrder(long orderId) throws SQLException {
         String query = "SELECT products.product_id, name, price FROM products \n" +
-                "JOIN shopping_carts_products ON products.product_id = shopping_carts_products.product_id \n" +
-                "WHERE cart_id = ?";
+                "JOIN orders_products ON products.product_id = orders_products.product_id \n" +
+                "WHERE order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, cartId);
+            preparedStatement.setLong(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Product> productList = new ArrayList<>();
             while (resultSet.next()) {

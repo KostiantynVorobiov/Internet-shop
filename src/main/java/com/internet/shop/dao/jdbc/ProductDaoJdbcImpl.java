@@ -55,11 +55,11 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public List<Product> getAll() {
-        List<Product> productList = new ArrayList<>();
         String query = "SELECT * FROM products WHERE deleted = false ";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
+            List<Product> productList = new ArrayList<>();
             while (resultSet.next()) {
                 productList.add(getProductFromResultSet(resultSet));
             }

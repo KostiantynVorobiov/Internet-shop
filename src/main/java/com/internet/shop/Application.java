@@ -1,10 +1,12 @@
 package com.internet.shop;
 
 import com.internet.shop.lib.Injector;
+import com.internet.shop.model.Order;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.Role;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.model.User;
+import com.internet.shop.service.OrderService;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
@@ -29,7 +31,7 @@ public class Application {
         xiaomi.setPrice(xiaomi.getPrice() + 10000);
         System.out.println("Update product " + productService.update(xiaomi));
         System.out.println(productService.getAll());
-        productService.deleteById(xiaomi.getId());
+       // productService.deleteById(xiaomi.getId());
         System.out.println("After delete " + productService.getAll());
 
         System.out.println("Test users");
@@ -64,10 +66,9 @@ public class Application {
         for (User user : userService.getAll()) {
             System.out.println(user);
         }
-
-        System.out.println("Test shoppingCart");
         ShoppingCartService shoppingCartService = (ShoppingCartService) injector
                 .getInstance(ShoppingCartService.class);
+        System.out.println("Test shoppingCart");
         ShoppingCart shoppingCartAlkapone = new ShoppingCart(alkapone.getId());
         ShoppingCart shoppingCartMcClane = new ShoppingCart(mcClane.getId());
         ShoppingCart shoppingCartAfonya = new ShoppingCart(afonya.getId());
@@ -77,5 +78,47 @@ public class Application {
         shoppingCartService.addProduct(shoppingCartAfonya, huawei);
         shoppingCartService.addProduct(shoppingCartAlkapone, honor);
         shoppingCartService.addProduct(shoppingCartAlkapone, xiaomi);
+
+
+        System.out.println("Test shoppingCart");
+        shoppingCartService.create(shoppingCartAlkapone);
+        shoppingCartService.create(shoppingCartMcClane);
+        shoppingCartService.create(shoppingCartAfonya);
+
+        shoppingCartService.addProduct(shoppingCartAlkapone, honor);
+        shoppingCartService.addProduct(shoppingCartAlkapone, xiaomi);
+        shoppingCartService.addProduct(shoppingCartMcClane, huawei);
+
+        System.out.println("Alkapone's cart: " + shoppingCartService.getByUserId(alkapone.getId()));
+        System.out.println("McClane's cart: " + shoppingCartService.getByUserId(mcClane.getId()));
+
+        shoppingCartService.deleteProduct(shoppingCartMcClane, xiaomi);
+
+        System.out.println("McClane's cart after delete product: "
+                + shoppingCartService.getByUserId(mcClane.getId()));
+       // shoppingCartService.clear(shoppingCartMcClane);
+
+        System.out.println("McClane's cart after clear: "
+                + shoppingCartService.getByUserId(mcClane.getId()));
+        shoppingCartService.deleteById(shoppingCartMcClane.getId());
+
+        System.out.println(shoppingCartService.deleteById(8L));
+        System.out.println(shoppingCartService.getAll());
+        System.out.println("McClane shoping cart: " + shoppingCartService.getByUserId(alkapone.getId()));
+        System.out.println("Update ");
+        System.out.println();
+
+        System.out.println("Test order");
+        OrderService orderService = (OrderService) injector.getInstance(OrderService.class);
+        orderService.completeOrder(shoppingCartAlkapone);
+        orderService.completeOrder(shoppingCartAfonya);
+        orderService.completeOrder(shoppingCartService.getByUserId(afonya.getId()));
+        System.out.println("Alkapone order: " + orderService.getUserOrders(alkapone.getId()));
+        orderService.deleteById(afonya.getId());
+        System.out.println(orderService.getAll());
+        for (Order order : orderService.getAll()) {
+            System.out.println(order);
+        }
+        System.out.println("end)");
    }
 }
