@@ -10,7 +10,6 @@ import com.internet.shop.service.OrderService;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
-
 import java.util.Set;
 
 public class Application {
@@ -31,7 +30,7 @@ public class Application {
         xiaomi.setPrice(xiaomi.getPrice() + 10000);
         System.out.println("Update product " + productService.update(xiaomi));
         System.out.println(productService.getAll());
-       // productService.deleteById(xiaomi.getId());
+        productService.deleteById(xiaomi.getId());
         System.out.println("After delete " + productService.getAll());
 
         System.out.println("Test users");
@@ -40,14 +39,14 @@ public class Application {
         User mcClane = new User("McClane", "oreshek.2008", "911911");
         User afonya = new User("Afonya", "golubi.1978", "1111");
         User afanasii = new User("Afanasii", "Ivanov.2020", "13579");
-        alkapone.setRoles(Set.of(Role.of("USER")));
-        mcClane.setRoles(Set.of(Role.of("ADMIN")));
-        afonya.setRoles(Set.of(Role.of("USER")));
-        afanasii.setRoles(Set.of(Role.of("USER")));
         userService.create(alkapone);
         userService.create(mcClane);
         userService.create(afonya);
         userService.create(afanasii);
+        alkapone.setRoles(Set.of(Role.of("USER")));
+        mcClane.setRoles(Set.of(Role.of("ADMIN")));
+        afonya.setRoles(Set.of(Role.of("USER")));
+        afanasii.setRoles(Set.of(Role.of("USER")));
         System.out.println("Get user id " + alkapone.getId());
         System.out.println("Get user id " + mcClane.getId());
         System.out.println("Get user id " + afonya.getId());
@@ -79,7 +78,6 @@ public class Application {
         shoppingCartService.addProduct(shoppingCartAlkapone, honor);
         shoppingCartService.addProduct(shoppingCartAlkapone, xiaomi);
 
-
         System.out.println("Test shoppingCart");
         shoppingCartService.create(shoppingCartAlkapone);
         shoppingCartService.create(shoppingCartMcClane);
@@ -96,7 +94,7 @@ public class Application {
 
         System.out.println("McClane's cart after delete product: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
-       // shoppingCartService.clear(shoppingCartMcClane);
+        // shoppingCartService.clear(shoppingCartMcClane);
 
         System.out.println("McClane's cart after clear: "
                 + shoppingCartService.getByUserId(mcClane.getId()));
@@ -104,7 +102,8 @@ public class Application {
 
         System.out.println(shoppingCartService.deleteById(8L));
         System.out.println(shoppingCartService.getAll());
-        System.out.println("McClane shoping cart: " + shoppingCartService.getByUserId(alkapone.getId()));
+        System.out.println("McClane shoping cart: "
+                + shoppingCartService.getByUserId(alkapone.getId()));
         System.out.println("Update ");
         System.out.println();
 
@@ -120,5 +119,5 @@ public class Application {
             System.out.println(order);
         }
         System.out.println("end)");
-   }
+    }
 }

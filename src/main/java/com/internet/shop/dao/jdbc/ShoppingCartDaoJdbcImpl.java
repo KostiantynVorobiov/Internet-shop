@@ -6,7 +6,6 @@ import com.internet.shop.lib.Dao;
 import com.internet.shop.model.Product;
 import com.internet.shop.model.ShoppingCart;
 import com.internet.shop.util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -137,9 +136,10 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
     }
 
     private List<Product> getProductsFromShoppingCart(Long cartId) throws SQLException {
-        String query = "SELECT products.product_id, name, price FROM products \n" +
-                "JOIN shopping_carts_products ON products.product_id = shopping_carts_products.product_id \n" +
-                "WHERE cart_id = ?";
+        String query = "SELECT products.product_id, name, price FROM products \n"
+                + "JOIN shopping_carts_products "
+                + "ON products.product_id = shopping_carts_products.product_id \n"
+                + "WHERE cart_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, cartId);

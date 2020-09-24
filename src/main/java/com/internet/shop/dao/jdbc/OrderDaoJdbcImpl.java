@@ -62,6 +62,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Order order = getOrderFromResultSet(resultSet);
+                return Optional.of(order);
             }
         } catch (SQLException e) {
             throw new DataOperationException("Can't get order by id " + orderId, e);
@@ -135,9 +136,9 @@ public class OrderDaoJdbcImpl implements OrderDao {
     }
 
     private List<Product> getProductsFromOrder(long orderId) throws SQLException {
-        String query = "SELECT products.product_id, name, price FROM products \n" +
-                "JOIN orders_products ON products.product_id = orders_products.product_id \n" +
-                "WHERE order_id = ?";
+        String query = "SELECT products.product_id, name, price FROM products \n"
+                + "JOIN orders_products ON products.product_id = orders_products.product_id \n"
+                + "WHERE order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, orderId);
