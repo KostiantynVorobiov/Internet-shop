@@ -106,7 +106,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, orderId);
-            return preparedStatement.executeUpdate() == 1;
+            return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataOperationException("Can't delete order by id: " + orderId, e);
         }

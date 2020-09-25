@@ -106,7 +106,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, id);
-            return preparedStatement.executeUpdate() == 1;
+            return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataOperationException("Can't delete shopping cart with id " + id, e);
         }
