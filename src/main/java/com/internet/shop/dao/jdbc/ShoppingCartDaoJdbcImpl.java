@@ -25,7 +25,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet);
+                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet, connection);
                 return Optional.of(shoppingCart);
             }
         } catch (SQLException e) {
@@ -46,11 +46,11 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             while (resultSet.next()) {
                 shoppingCart.setId(resultSet.getLong(1));
             }
+            addProductsToShoppingCart(shoppingCart, connection);
+            return shoppingCart;
         } catch (SQLException e) {
             throw new DataOperationException("Can't create shopping cart", e);
         }
-        addProductsToShoppingCart(shoppingCart);
-        return shoppingCart;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet);
+                ShoppingCart shoppingCart = getShoppingCartFromResultSet(resultSet, connection);
                 return Optional.of(shoppingCart);
             }
         } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<ShoppingCart> shoppingCartList = new ArrayList<>();
             while (resultSet.next()) {
-                shoppingCartList.add(getShoppingCartFromResultSet(resultSet));
+                shoppingCartList.add(getShoppingCartFromResultSet(resultSet, connection));
             }
             return shoppingCartList;
         } catch (SQLException e) {
@@ -93,11 +93,11 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, shoppingCart.getId());
             preparedStatement.executeUpdate();
+            addProductsToShoppingCart(shoppingCart, connection);
+            return shoppingCart;
         } catch (SQLException e) {
             throw new DataOperationException("Can't update shopping cart", e);
         }
-        addProductsToShoppingCart(shoppingCart);
-        return shoppingCart;
     }
 
     @Override
@@ -112,48 +112,47 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
         }
     }
 
-    private void addProductsToShoppingCart(ShoppingCart shoppingCart) {
+    private void addProductsToShoppingCart(ShoppingCart shoppingCart, Connection connection)
+            throws SQLException {
         String query = "INSERT INTO shopping_carts_products (cart_id, product_id) VALUES (?, ?)";
-        try (Connection connection = ConnectionUtil.getConnection()) {
-            for (Product product : shoppingCart.getProducts()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setLong(1, shoppingCart.getId());
-                preparedStatement.setLong(2, product.getId());
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DataOperationException("Can't add product to shopping cart", e);
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        for (Product product : shoppingCart.getProducts()) {
+            preparedStatement.setLong(1, shoppingCart.getId());
+            preparedStatement.setLong(2, product.getId());
+            preparedStatement.executeUpdate();
         }
+        preparedStatement.close();
     }
 
-    private ShoppingCart getShoppingCartFromResultSet(ResultSet resultSet) throws SQLException {
+    private ShoppingCart getShoppingCartFromResultSet(ResultSet resultSet, Connection connection)
+            throws SQLException {
         Long cartId = resultSet.getLong("cart_id");
         Long userId = resultSet.getLong("user_id");
         ShoppingCart shoppingCart = new ShoppingCart(userId);
         shoppingCart.setId(cartId);
-        shoppingCart.setProducts(getProductsFromShoppingCart(cartId));
+        shoppingCart.setProducts(getProductsFromShoppingCart(cartId, connection));
         return shoppingCart;
     }
 
-    private List<Product> getProductsFromShoppingCart(Long cartId) throws SQLException {
+    private List<Product> getProductsFromShoppingCart(Long cartId, Connection connection)
+            throws SQLException {
         String query = "SELECT products.product_id, name, price FROM products \n"
                 + "JOIN shopping_carts_products "
                 + "ON products.product_id = shopping_carts_products.product_id \n"
                 + "WHERE cart_id = ?";
-        try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, cartId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> productList = new ArrayList<>();
-            while (resultSet.next()) {
-                Long productId = resultSet.getLong("product_id");
-                String name = resultSet.getString("name");
-                double price = resultSet.getDouble("price");
-                Product product = new Product(name, price);
-                product.setId(productId);
-                productList.add(product);
-            }
-            return productList;
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setLong(1, cartId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Product> productList = new ArrayList<>();
+        while (resultSet.next()) {
+            Long productId = resultSet.getLong("product_id");
+            String name = resultSet.getString("name");
+            double price = resultSet.getDouble("price");
+            Product product = new Product(name, price);
+            product.setId(productId);
+            productList.add(product);
         }
+        preparedStatement.close();
+        return productList;
     }
 }

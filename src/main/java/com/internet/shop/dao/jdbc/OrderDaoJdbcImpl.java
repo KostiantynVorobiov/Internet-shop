@@ -26,7 +26,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
-                orderList.add(getOrderFromResultSet(resultSet));
+                orderList.add(getOrderFromResultSet(resultSet, connection));
             }
             return orderList;
         } catch (SQLException e) {
@@ -46,11 +46,11 @@ public class OrderDaoJdbcImpl implements OrderDao {
             while (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
             }
+            addProductToOrder(order, connection);
+            return order;
         } catch (SQLException e) {
             throw new DataOperationException("Can't create order", e);
         }
-        addProductToOrder(order);
-        return order;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             preparedStatement.setLong(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Order order = getOrderFromResultSet(resultSet);
+                Order order = getOrderFromResultSet(resultSet, connection);
                 return Optional.of(order);
             }
         } catch (SQLException e) {
@@ -78,7 +78,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Order> orderList = new ArrayList<>();
             while (resultSet.next()) {
-                orderList.add(getOrderFromResultSet(resultSet));
+                orderList.add(getOrderFromResultSet(resultSet, connection));
             }
             return orderList;
         } catch (SQLException e) {
@@ -93,11 +93,11 @@ public class OrderDaoJdbcImpl implements OrderDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, order.getId());
             preparedStatement.executeUpdate();
+            addProductToOrder(order, connection);
+            return order;
         } catch (SQLException e) {
             throw new DataOperationException("Can't update order with id: " + order.getId(), e);
         }
-        addProductToOrder(order);
-        return order;
     }
 
     @Override
@@ -112,47 +112,45 @@ public class OrderDaoJdbcImpl implements OrderDao {
         }
     }
 
-    private void addProductToOrder(Order order) {
+    private void addProductToOrder(Order order, Connection connection) throws SQLException {
         String query = "INSERT INTO orders_products (order_id, product_id) VALUES (?, ?)";
-        try (Connection connection = ConnectionUtil.getConnection()) {
-            for (Product product : order.getProducts()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setLong(1, order.getId());
-                preparedStatement.setLong(2, product.getId());
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DataOperationException("Can't add product to order", e);
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        for (Product product : order.getProducts()) {
+            preparedStatement.setLong(1, order.getId());
+            preparedStatement.setLong(2, product.getId());
+            preparedStatement.executeUpdate();
         }
+        preparedStatement.close();
     }
 
-    private Order getOrderFromResultSet(ResultSet resultSet) throws SQLException {
+    private Order getOrderFromResultSet(ResultSet resultSet, Connection connection)
+            throws SQLException {
         long orderId = resultSet.getLong("order_id");
         long userId = resultSet.getLong("user_id");
         Order order = new Order(userId);
         order.setId(orderId);
-        order.setProducts(getProductsFromOrder(orderId));
+        order.setProducts(getProductsFromOrder(orderId, connection));
         return order;
     }
 
-    private List<Product> getProductsFromOrder(long orderId) throws SQLException {
+    private List<Product> getProductsFromOrder(long orderId, Connection connection)
+            throws SQLException {
         String query = "SELECT products.product_id, name, price FROM products \n"
                 + "JOIN orders_products ON products.product_id = orders_products.product_id \n"
                 + "WHERE order_id = ?";
-        try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setLong(1, orderId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> productList = new ArrayList<>();
-            while (resultSet.next()) {
-                Long productId = resultSet.getLong("product_id");
-                String name = resultSet.getString("name");
-                double price = resultSet.getDouble("price");
-                Product product = new Product(name, price);
-                product.setId(productId);
-                productList.add(product);
-            }
-            return productList;
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setLong(1, orderId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        List<Product> productList = new ArrayList<>();
+        while (resultSet.next()) {
+            Long productId = resultSet.getLong("product_id");
+            String name = resultSet.getString("name");
+            double price = resultSet.getDouble("price");
+            Product product = new Product(name, price);
+            product.setId(productId);
+            productList.add(product);
         }
+        preparedStatement.close();
+        return productList;
     }
 }
