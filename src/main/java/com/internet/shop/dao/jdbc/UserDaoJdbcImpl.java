@@ -102,10 +102,12 @@ public class UserDaoJdbcImpl implements UserDao {
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.setLong(4, user.getId());
             preparedStatement.executeUpdate();
-            return user;
         } catch (SQLException e) {
             throw new DataOperationException("Can't update user " + user.getName(), e);
         }
+        deleteUserRole(user);
+        addUserRoles(user);
+        return user;
     }
 
     @Override
@@ -133,16 +135,20 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     private Set<Role> getUserRoleByUserId(Long userId) {
-        String query = "SELECT user_id, role_name FROM roles \n"
-                + "JOIN users_roles ON roles.role_id = users_roles.role_id \n"
-                + "WHERE user_id = ?";
+        String query = "SELECT user_id, role_name, users_roles.role_id FROM roles\n" +
+                "JOIN users_roles ON roles.role_id = users_roles.role_id\n" +
+                "WHERE user_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Set<Role> userRoles = new HashSet<>();
             while (resultSet.next()) {
-                userRoles.add(Role.of(resultSet.getString("role_name")));
+                Long roleId = resultSet.getLong("role_id");
+                String roleName = resultSet.getString("role_name");
+                Role role = Role.of(roleName);
+                role.setId(roleId);
+                userRoles.add(role);
             }
             return userRoles;
         } catch (SQLException e) {
@@ -161,6 +167,17 @@ public class UserDaoJdbcImpl implements UserDao {
             }
         } catch (SQLException e) {
             throw new DataOperationException("Can't add role to user", e);
+        }
+    }
+
+    private void deleteUserRole(User user) {
+        String query = "DELETE FROM internet_shop.users_roles WHERE user_id = ?";
+        try (Connection connection = ConnectionUtil.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataOperationException("Can't delete role in " + user.getName(), e);
         }
     }
 
