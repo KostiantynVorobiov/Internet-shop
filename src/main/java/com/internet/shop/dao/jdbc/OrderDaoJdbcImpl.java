@@ -46,6 +46,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             while (resultSet.next()) {
                 order.setId(resultSet.getLong(1));
             }
+            preparedStatement.close();
             addProductToOrder(order, connection);
             return order;
         } catch (SQLException e) {
@@ -93,6 +94,7 @@ public class OrderDaoJdbcImpl implements OrderDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, order.getId());
             preparedStatement.executeUpdate();
+            preparedStatement.close();
             addProductToOrder(order, connection);
             return order;
         } catch (SQLException e) {

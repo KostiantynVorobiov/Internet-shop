@@ -46,6 +46,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             while (resultSet.next()) {
                 shoppingCart.setId(resultSet.getLong(1));
             }
+            preparedStatement.close();
             addProductsToShoppingCart(shoppingCart, connection);
             return shoppingCart;
         } catch (SQLException e) {
@@ -93,6 +94,7 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setLong(1, shoppingCart.getId());
             preparedStatement.executeUpdate();
+            preparedStatement.close();
             addProductsToShoppingCart(shoppingCart, connection);
             return shoppingCart;
         } catch (SQLException e) {

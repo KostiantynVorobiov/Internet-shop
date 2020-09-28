@@ -51,6 +51,7 @@ public class UserDaoJdbcImpl implements UserDao {
             while (resultSet.next()) {
                 user.setId(resultSet.getLong(1));
             }
+            preparedStatement.close();
             addUserRoles(user, connection);
         } catch (SQLException e) {
             throw new DataOperationException("Can't create user " + user.getName(), e);
@@ -102,6 +103,7 @@ public class UserDaoJdbcImpl implements UserDao {
             preparedStatement.setString(3, user.getPassword());
             preparedStatement.setLong(4, user.getId());
             preparedStatement.executeUpdate();
+            preparedStatement.close();
             deleteUserRole(user, connection);
             addUserRoles(user, connection);
             return user;
