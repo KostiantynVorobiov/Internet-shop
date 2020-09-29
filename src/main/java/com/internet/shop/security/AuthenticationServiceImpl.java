@@ -5,6 +5,7 @@ import com.internet.shop.lib.Inject;
 import com.internet.shop.lib.Service;
 import com.internet.shop.model.User;
 import com.internet.shop.service.UserService;
+import com.internet.shop.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -15,7 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String login, String password) throws AuthenticationException {
         User userFromDb = userService.findByLogin(login).orElseThrow(() ->
                 new AuthenticationException("This user does not exist or incorrect data entered"));
-        if (userFromDb.getPassword().equals(password)) {
+        if (userFromDb.getPassword().equals(HashUtil.hashPassword(password, userFromDb.getSalt()))) {
             return userFromDb;
         }
         throw new AuthenticationException("Incorrect login or password");

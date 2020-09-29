@@ -20,6 +20,9 @@ CREATE TABLE `internet_shop`.`users`
     UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE
 );
 
+ALTER TABLE `internet_shop`.`users`
+    ADD COLUMN `salt` VARBINARY(16) NOT NULL AFTER `password`;
+
 CREATE TABLE `internet_shop`.`roles`
 (
     `role_id`   BIGINT       NOT NULL AUTO_INCREMENT,
