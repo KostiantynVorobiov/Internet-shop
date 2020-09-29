@@ -8,8 +8,6 @@ import com.internet.shop.model.User;
 import com.internet.shop.service.ProductService;
 import com.internet.shop.service.ShoppingCartService;
 import com.internet.shop.service.UserService;
-import com.internet.shop.util.HashUtil;
-
 import java.io.IOException;
 import java.util.Set;
 import javax.servlet.ServletException;
@@ -31,12 +29,6 @@ public class InjectDataController extends HttpServlet {
         User mcClane = new User("McClane", "oreshek.2008", "911911");
         mcClane.setRoles(Set.of(Role.of("USER")));
         userService.create(mcClane);
-        User afonya = new User("Afonya", "golubi.1978", "1111");
-        afonya.setRoles(Set.of(Role.of("USER")));
-        userService.create(afonya);
-        User afanasii = new User("Afanasii", "Ivanov.2020", "13579");
-        afanasii.setRoles(Set.of(Role.of("USER")));
-        userService.create(afanasii);
 
         User admin = new User("Admin", "admin", "a");
         admin.setRoles(Set.of(Role.of("ADMIN")));
@@ -49,11 +41,7 @@ public class InjectDataController extends HttpServlet {
         productService.create(honor);
         productService.create(motorola);
 
-        ShoppingCart shoppingCartAffanasii = new ShoppingCart(afanasii.getId());
-        ShoppingCart shoppingCartAfonya = new ShoppingCart(afonya.getId());
         ShoppingCart shoppingCartMcClane = new ShoppingCart(mcClane.getId());
-        shoppingCartService.create(shoppingCartAffanasii);
-        shoppingCartService.create(shoppingCartAfonya);
         shoppingCartService.create(shoppingCartMcClane);
         req.getRequestDispatcher("/WEB-INF/views/injectData.jsp").forward(req, resp);
     }
