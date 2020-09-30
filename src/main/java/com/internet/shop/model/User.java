@@ -1,5 +1,6 @@
 package com.internet.shop.model;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class User {
@@ -7,6 +8,7 @@ public class User {
     private String name;
     private String login;
     private String password;
+    private byte[] salt;
     private Set<Role> roles;
 
     public User(String name, String login, String password) {
@@ -55,6 +57,14 @@ public class User {
         this.roles = roles;
     }
 
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
     @Override
     public String toString() {
         return "User{"
@@ -62,6 +72,7 @@ public class User {
                 + ", name='" + name + '\''
                 + ", login='" + login + '\''
                 + ", password='" + password + '\''
+                + ", salt=" + Arrays.toString(salt)
                 + ", roles=" + roles
                 + '}';
     }
