@@ -1,5 +1,6 @@
 package com.internet.shop.model;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class User {
@@ -71,6 +72,7 @@ public class User {
                 + ", name='" + name + '\''
                 + ", login='" + login + '\''
                 + ", password='" + password + '\''
+                + ", salt=" + Arrays.toString(salt)
                 + ", roles=" + roles
                 + '}';
     }
