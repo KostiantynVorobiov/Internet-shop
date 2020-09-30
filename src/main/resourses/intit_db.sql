@@ -11,17 +11,15 @@ CREATE TABLE `internet_shop`.`products`
 
 CREATE TABLE `internet_shop`.`users`
 (
-    `user_id`  BIGINT(11)   NOT NULL AUTO_INCREMENT,
-    `name`     VARCHAR(255) NOT NULL,
-    `login`    VARCHAR(255) NOT NULL,
-    `password` VARCHAR(255) NULL,
-    `deleted`  TINYINT      NOT NULL DEFAULT 0,
+    `user_id`  BIGINT(11)    NOT NULL AUTO_INCREMENT,
+    `name`     VARCHAR(255)  NOT NULL,
+    `login`    VARCHAR(255)  NOT NULL,
+    `password` VARCHAR(255)  NULL,
+    `salt`     VARBINARY(16) NOT NULL,
+    `deleted`  TINYINT       NOT NULL DEFAULT 0,
     PRIMARY KEY (`user_id`),
     UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE
 );
-
-ALTER TABLE `internet_shop`.`users`
-    ADD COLUMN `salt` VARBINARY(16) NOT NULL AFTER `password`;
 
 CREATE TABLE `internet_shop`.`roles`
 (
