@@ -25,14 +25,11 @@ The technologies used in the project are as follows:
 - Maven for assembling the project.
 
 ## Launch guide.
-Clone the project from this repository.
-Download and install the Tomcat server and add all the necessary dependencies for Java servlets to the `pom.xml` file.
-Install MySQL Workbench, in class `ConnectionUtil` install the necessary driver to connect to your database and change the driver in the class, insert your username and password, and specify the url address for connecting to the database. 
-Create a schema in your database using the queries that you will find in the resources folder in the `init_db` file.
-When you run the application, first register as a new user and log in using the data you entered during registration. 
-When you log on to the site, click on the `Inject` button, which will load the data for testing the website functionality into the database.
-Test all pages accessible for the user. 
-To try out the admin functionality, you need to log out of the system and log in with the admin login and password (login: _admin_, password: _a_). The admin profile will have been created when you clicked on the inject button.
-
+1. Clone the project from this repository.
+2. Download and install the Tomcat server and add all the necessary dependencies for Java servlets to the `pom.xml` file.
+3. Install MySQL Workbench, in class `ConnectionUtil` install the necessary driver to connect to your database and change the driver in the class, insert your username and password, and specify the url address for connecting to the database. 
+4. Create a schema in your database using the queries that you will find in the resources folder in the `init_db` file. When you run the application, first register as a new user and log in using the data you entered during registration. When you log on to the site, click on the `Inject` button, which will load the data for testing the website functionality into the database.
+5. Test all pages accessible for the user. 
+6. To try out the admin functionality, you need to log out of the system and log in with the admin login and password (login: _admin_, password: _a_). The admin profile will have been created when you clicked on the inject button.
 ## Author.
 [Kostiantyn Vorobiov](https://github.com/KostiantynVorobiov)
